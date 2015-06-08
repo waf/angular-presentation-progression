@@ -4,9 +4,19 @@
     <meta charset="UTF-8">
     <title>Angular Demo</title>
     <script src="lib\angular.min.js"></script>
+    <script>
+        var app = angular.module("app", []);
+        app.controller("AppController", function($scope) {
+            $scope.title = "Hello .NET Users Group!";
+        });
+    </script>
 </head>
-<body ng-app>
+<body ng-app="app" ng-controller="AppController">
+    <h1>{{title}}</h1>
     <input type="text" ng-model="myVariable" />
-    <p>You typed: {{myVariable}}</p>
+    <div ng-show="myVariable">
+        <p>You typed: {{myVariable}}</p>
+        <p>{{myVariable}} is {{myVariable.length}} characters long.</p>
+    </div>
 </body>
 </html>
