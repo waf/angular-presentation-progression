@@ -8,15 +8,23 @@
         var app = angular.module("app", []);
         app.controller("AppController", function($scope) {
             $scope.title = "Hello .NET Users Group!";
+            $scope.favorites = [".NET", "Angular", "Dragons"];
+            $scope.addFavorite = function() {
+                $scope.favorites.push($scope.myFavorite);
+                $scope.myFavorite = '';
+                $scope.title += "!";
+            };
         });
     </script>
 </head>
 <body ng-app="app" ng-controller="AppController">
     <h1>{{title}}</h1>
-    <input type="text" ng-model="myVariable" />
-    <div ng-show="myVariable">
-        <p>You typed: {{myVariable}}</p>
-        <p>{{myVariable}} is {{myVariable.length}} characters long.</p>
-    </div>
+    <ol>
+        <li ng-repeat="f in favorites">{{f}}</li>
+    </ol>
+    <form ng-submit="addFavorite()">
+        <input type="text" ng-model="myFavorite" />
+        <input type="submit" value="Add your favorite!" />
+    </form>
 </body>
 </html>
