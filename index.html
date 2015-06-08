@@ -6,21 +6,27 @@
     <script src="lib\angular.min.js"></script>
     <script>
         var app = angular.module("app", []);
-        app.controller("AppController", function($scope) {
+        app.controller("AppController", function($scope, $log) {
             $scope.title = "Hello .NET Users Group!";
             $scope.favorites = [".NET", "Angular", "Dragons"];
             $scope.addFavorite = function() {
+                if($scope.myFavorite === "Cobol")
+                {
+                    $log.error("Cobol cannot be a favorite");
+                    return;
+                }
                 $scope.favorites.push($scope.myFavorite);
                 $scope.myFavorite = '';
                 $scope.title += "!";
             };
         });
     </script>
+    <link rel="stylesheet" href="lib\animate.css">
 </head>
 <body ng-app="app" ng-controller="AppController">
     <h1>{{title}}</h1>
     <ol>
-        <li ng-repeat="f in favorites">{{f}}</li>
+        <li ng-repeat="f in favorites" class="animated bounceInLeft">{{f}}</li>
     </ol>
     <form ng-submit="addFavorite()">
         <input type="text" ng-model="myFavorite" />
