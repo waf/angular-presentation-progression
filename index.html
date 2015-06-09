@@ -6,16 +6,29 @@
     <script src="lib\angular.min.js"></script>
     <script>
         var app = angular.module("app", []);
-        app.controller("AppController", function($scope, $log) {
-            $scope.title = "Hello .NET Users Group!";
-            $scope.favorites = [".NET", "Angular", "Dragons"];
-            $scope.addFavorite = function() {
-                if($scope.myFavorite === "Cobol")
-                {
-                    $log.error("Cobol cannot be a favorite");
-                    return;
+        app.service('favoritesService', function($log) {
+            $log.info("initializing favorites service");
+            var favorites = [];
+            this.addFavorite = function(favorite) {
+                if(favorite === "Cobol") {
+                    throw "Cobol cannot be a favorite";
                 }
-                $scope.favorites.push($scope.myFavorite);
+                favorites.push(favorite);
+            };
+            this.getFavorites = function() {
+                return favorites;
+            };
+        });
+        app.controller("AppController", function($scope, $log, favoritesService) {
+            $scope.title = "Hello .NET Users Group!";
+            $scope.favorites = favoritesService.getFavorites();
+            $scope.addFavorite = function() {
+                try {
+                    favoritesService.addFavorite($scope.myFavorite);
+                }
+                catch(err) {
+                    $log.error(err);
+                }
                 $scope.myFavorite = '';
                 $scope.title += "!";
             };
@@ -26,7 +39,7 @@
 <body ng-app="app" ng-controller="AppController">
     <h1>{{title}}</h1>
     <ol>
-        <li ng-repeat="f in favorites" class="animated bounceInLeft">{{f}}</li>
+        <li ng-repeat="fav in favorites" class='animated bounceInLeft'>{{fav}}</li>
     </ol>
     <form ng-submit="addFavorite()">
         <input type="text" ng-model="myFavorite" />
